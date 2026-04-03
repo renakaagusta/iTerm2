@@ -385,6 +385,7 @@ extern NSString *const iTermDidCreateTerminalWindowNotification;
              revive:(BOOL)revive;
 
 - (IBAction)toggleToolbeltVisibility:(id)sender;
+- (IBAction)toggleFloatOnTop:(id)sender;
 
 - (void)setupSession:(PTYSession *)aSession
             withSize:(NSSize *)size;

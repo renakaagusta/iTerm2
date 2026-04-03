@@ -174,21 +174,7 @@ static NSArray<NSString *> *gTerminalCachedCombinedAccountNames;
 
     _scrim.wantsLayer = YES;
     _scrim.layer = [[CALayer alloc] init];
-    if (@available(macOS 26, *)) {
-        NSView *inner = _scrim.subviews.firstObject;
-        NSGlassEffectView *glass = [[NSGlassEffectView alloc] init];
-        glass.style = NSGlassEffectViewStyleClear;
-        glass.tintColor = [[NSColor controlBackgroundColor] colorWithAlphaComponent:0.25];
-        glass.frame = _scrim.bounds;
-        _scrim.autoresizesSubviews = YES;
-        glass.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [_scrim addSubview:glass];
-        NSView *content = [[NSView alloc] initWithFrame:_scrim.bounds];
-        [content addSubview:inner];
-        glass.contentView = content;
-    } else {
-        _scrim.layer.backgroundColor = [[[NSColor windowBackgroundColor] colorWithAlphaComponent:0.75] CGColor];
-    }
+    _scrim.layer.backgroundColor = [[[NSColor windowBackgroundColor] colorWithAlphaComponent:0.75] CGColor];
     _scrim.alphaValue = 0;
 
     _broadcastButton.state = NSControlStateValueOff;

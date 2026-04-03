@@ -64,23 +64,10 @@ class ChatInputView: NSView, NSTextFieldDelegate {
         inputTextFieldContainer.textView.delegate = self
 
         sendButton = SendButton(image: sendImage, target: self, action: #selector(sendButtonClicked))
-        if #available(macOS 26, *) {
-            // New Tahoe (macOS 26) liquid glass look
-            sendButton.imagePosition = .imageOnly
-            sendButton.imageScaling = .scaleProportionallyDown
-            sendButton.contentTintColor = .it_dynamicColor(forLightMode: NSColor(white: 1, alpha: 0.3),
-                                                           darkMode: NSColor(white: 0, alpha: 0.3))
-            sendButton.controlSize = .large
-            sendButton.bezelStyle = .glass
-            sendButton.borderShape = .circle
-            sendButton.isBordered = true
-            sendButton.showsBorderOnlyWhileMouseInside = true
-        } else {
-            sendButton.imageScaling = .scaleProportionallyUpOrDown
-            sendButton.imagePosition = .imageOnly
-            sendButton.bezelStyle = .regularSquare
-            sendButton.isBordered = false
-        }
+        sendButton.imageScaling = .scaleProportionallyUpOrDown
+        sendButton.imagePosition = .imageOnly
+        sendButton.bezelStyle = .regularSquare
+        sendButton.isBordered = false
         sendButton.setButtonType(.momentaryPushIn)
 
         sendButton.translatesAutoresizingMaskIntoConstraints = false
@@ -94,18 +81,7 @@ class ChatInputView: NSView, NSTextFieldDelegate {
             addImage = addImage.withSymbolConfiguration(config)!
         }
         addAttachmentButton = AddAttachmentButton(image: addImage, target: self, action: #selector(attachmentButtonClicked))
-        if #available(macOS 26, *) {
-            // New Tahoe (macOS 26) liquid glass look
-            addAttachmentButton.imagePosition = .imageOnly
-            addAttachmentButton.imageScaling = .scaleProportionallyDown
-            addAttachmentButton.contentTintColor = .it_dynamicColor(forLightMode: NSColor(white: 1, alpha: 0.3),
-                                                                    darkMode: NSColor(white: 0, alpha: 0.3))
-            addAttachmentButton.controlSize = .large
-            addAttachmentButton.bezelStyle = .glass
-            addAttachmentButton.borderShape = .circle
-            addAttachmentButton.isBordered = true
-            addAttachmentButton.showsBorderOnlyWhileMouseInside = true
-        } else {
+        do {
             addAttachmentButton.imageScaling = .scaleNone
             addAttachmentButton.imagePosition = .imageOnly
             addAttachmentButton.bezelStyle = .regularSquare

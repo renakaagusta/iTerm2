@@ -43,15 +43,7 @@ typedef NS_ENUM(NSInteger, iTermTabBarFlashState) {
         // This used to depend on job but it's too difficult to do now that different sessions might
         // have different title formats.
         self.ignoreTrailingParentheticalsForSmartTruncation = YES;
-        if (@available(macOS 26, *)) {
-            if (![iTermAdvancedSettingsModel useSequoiaStyleTabs]) {
-                self.height =  PSMTahoeTabStyle.horizontalTabBarHeight;
-            } else {
-                self.height = [iTermAdvancedSettingsModel defaultTabBarHeight];
-            }
-        } else {
-            self.height = [iTermAdvancedSettingsModel defaultTabBarHeight];
-        }
+        self.height = [iTermAdvancedSettingsModel defaultTabBarHeight];
         self.showAddTabButton = ![iTermAdvancedSettingsModel removeAddTabButton];
         self.selectsTabsOnMouseDown = [iTermAdvancedSettingsModel selectsTabsOnMouseDown];
     }
