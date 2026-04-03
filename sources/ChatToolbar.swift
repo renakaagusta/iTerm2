@@ -210,12 +210,8 @@ extension ChatToolbar {
             view.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor)
         })
 
-        // Create glass effect view to wrap the container
-        let glassView = NSGlassEffectView()
-        glassView.contentView = containerView
-        glassView.cornerRadius = 20
-        glassView.translatesAutoresizingMaskIntoConstraints = false
-        return glassView
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        return containerView
     }
 
     func createOrUpdateModelSelector() {

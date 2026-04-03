@@ -227,15 +227,7 @@ PSMTabBarControlOptionKey PSMTabBarControlOptionDarkModeInactiveTabDarkness = @"
         _minimumTabDragDistance = 10;
         _hasCloseButton = YES;
         _tabLocation = PSMTab_TopTab;
-        if (@available(macOS 26, *)) {
-            if (![iTermAdvancedSettingsModel useSequoiaStyleTabs]) {
-                _style = [[PSMTahoeTabStyle alloc] init];
-            } else {
-                _style = [[PSMYosemiteTabStyle alloc] init];
-            }
-        } else {
-            _style = [[PSMYosemiteTabStyle alloc] init];
-        }
+        _style = [[PSMYosemiteTabStyle alloc] init];
         _preDragSelectedTabIndex = NSNotFound;
 
         // the overflow button/menu

@@ -69,37 +69,15 @@
             if (preferredStyle == TAB_STYLE_COMPACT) {
                 return [[PSMYosemiteTabStyle alloc] init];
             }
-            if (@available(macOS 26, *)) {
-                if (![iTermAdvancedSettingsModel useSequoiaStyleTabs]) {
-                    return [[PSMTahoeTabStyle alloc] init];
-                }
-            }
             return [[PSMYosemiteTabStyle alloc] init];
         case TAB_STYLE_DARK:
             if (preferredStyle == TAB_STYLE_COMPACT) {
                 return [[PSMDarkTabStyle alloc] init];
             }
-            if (@available(macOS 26, *)) {
-                if (![iTermAdvancedSettingsModel useSequoiaStyleTabs]) {
-                    return [[PSMTahoeDarkTabStyle alloc] init];
-                }
-            }
             return [[PSMDarkTabStyle alloc] init];
         case TAB_STYLE_LIGHT_HIGH_CONTRAST:
-            if (@available(macOS 26, *)) {
-                if (![iTermAdvancedSettingsModel useSequoiaStyleTabs] &&
-                    preferredStyle != TAB_STYLE_COMPACT) {
-                    return [[PSMTahoeLightHighContrastTabStyle alloc] init];
-                }
-            }
             return [[PSMLightHighContrastTabStyle alloc] init];
         case TAB_STYLE_DARK_HIGH_CONTRAST:
-            if (@available(macOS 26, *)) {
-                if (![iTermAdvancedSettingsModel useSequoiaStyleTabs] &&
-                    preferredStyle != TAB_STYLE_COMPACT) {
-                    return [[PSMTahoeDarkHighContrastTabStyle alloc] init];
-                }
-            }
             return [[PSMDarkHighContrastTabStyle alloc] init];
     }
     assert(NO);

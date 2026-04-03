@@ -131,45 +131,20 @@ class ChatInputTextFieldContainer: NSView {
 
         // Configure background.
         let backgroundView: NSVisualEffectView?
-        if #available(macOS 26, *) {
-            backgroundView = nil
-            scrollView.translatesAutoresizingMaskIntoConstraints = false
-            let glassView = NSGlassEffectView()
-            glassView.contentView = scrollView
-            glassView.cornerRadius = 14
-            glassView.translatesAutoresizingMaskIntoConstraints = false
-            glassView.setContentHuggingPriority(.defaultLow, for: .horizontal)
-
-            addSubview(glassView)
-            NSLayoutConstraint.activate([
-                glassView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-                glassView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-                glassView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-                glassView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-            ])
-            // Let the scrollView size itself based on content
-            NSLayoutConstraint.activate([
-                scrollView.leadingAnchor.constraint(equalTo: glassView.leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: glassView.trailingAnchor),
-                scrollView.topAnchor.constraint(equalTo: glassView.topAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: glassView.bottomAnchor),
-            ])
-        } else {
-            scrollView.translatesAutoresizingMaskIntoConstraints = false
-            backgroundView = {
-                let backgroundView = NSVisualEffectView()
-                backgroundView.translatesAutoresizingMaskIntoConstraints = false
-                backgroundView.blendingMode = .withinWindow
-                backgroundView.material = .menu
-                backgroundView.state = .active
-                backgroundView.wantsLayer = true
-                backgroundView.layer?.cornerRadius = 10
-                backgroundView.layer?.masksToBounds = true
-                backgroundView.layer?.borderWidth = 1
-                backgroundView.layer?.borderColor = NSColor.gray.withAlphaComponent(0.5).cgColor
-                return backgroundView
-            }()
-        }
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView = {
+            let backgroundView = NSVisualEffectView()
+            backgroundView.translatesAutoresizingMaskIntoConstraints = false
+            backgroundView.blendingMode = .withinWindow
+            backgroundView.material = .menu
+            backgroundView.state = .active
+            backgroundView.wantsLayer = true
+            backgroundView.layer?.cornerRadius = 10
+            backgroundView.layer?.masksToBounds = true
+            backgroundView.layer?.borderWidth = 1
+            backgroundView.layer?.borderColor = NSColor.gray.withAlphaComponent(0.5).cgColor
+            return backgroundView
+        }()
 
         if let scrim {
             scrim.translatesAutoresizingMaskIntoConstraints = false

@@ -33,23 +33,10 @@
     _container = [[NSView alloc] initWithFrame:self.bounds];
     [self insertSubview:_container atIndex:0];
 
-    if (@available(macOS 26, *)) {
-        NSGlassEffectView *glassView = [[NSGlassEffectView alloc] initWithFrame:self.bounds];
-        _backgroundEffectView = glassView;
-        glassView.tintColor = [NSColor it_dynamicColorForLightMode:[NSColor colorWithWhite:0.8 alpha:0.7]
-                                                          darkMode:[NSColor colorWithWhite:0.2 alpha:0.7]];
-        _glassContentView = [[NSView alloc] initWithFrame:_backgroundEffectView.bounds];
-        glassView.contentView = _glassContentView;
-        [_container addSubview:_backgroundEffectView];
-    } else {
-        // Fallback for older macOS versions: use NSVisualEffectView
+    {
         NSVisualEffectView *visual = [[NSVisualEffectView alloc] initWithFrame:self.bounds];
         visual.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-        if (@available(macOS 10.16, *)) {
-            visual.material = NSVisualEffectMaterialMenu;
-        } else {
-            visual.material = NSVisualEffectMaterialSheet;
-        }
+        visual.material = NSVisualEffectMaterialMenu;
         visual.state = NSVisualEffectStateActive;
         _backgroundEffectView = visual;
         [_container addSubview:_backgroundEffectView];

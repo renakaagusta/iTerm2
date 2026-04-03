@@ -1517,6 +1517,13 @@ DQ
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="24F-Ft-dce"/>
+                            <menuItem title="Float on Top" identifier="Float on Top" id="iT2-FT-001">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleFloatOnTop:" target="-1" id="iT2-FT-002"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="iT2-FT-003"/>
                             <menuItem title="Arrangements" identifier="Arrangements" id="OBk-Hd-j3M">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Arrangements" id="7ay-jv-hQe">

@@ -408,6 +408,7 @@ typedef NS_ENUM(int, iTermShouldHaveTitleSeparator) {
     iTermOrderEnforcer *_proxyIconOrderEnforcer;
     BOOL _restorableStateInvalid;
     BOOL _inWindowDidMove;
+    BOOL _floatOnTop;
     NSView *_swipeContainerView;
 
     // Work around a macOS bug. If you set the window's appearance to light when creating a new
@@ -1234,6 +1235,18 @@ ITERM_WEAKLY_REFERENCEABLE
 
 - (IBAction)toggleToolbeltVisibility:(id)sender {
     [self toggleToolbeltVisibilityWithSideEffects:YES];
+}
+
+- (IBAction)toggleFloatOnTop:(id)sender {
+    _floatOnTop = !_floatOnTop;
+    if (_floatOnTop) {
+        self.window.level = NSFloatingWindowLevel;
+        self.window.collectionBehavior |= (NSWindowCollectionBehaviorCanJoinAllSpaces |
+                                           NSWindowCollectionBehaviorFullScreenAuxiliary);
+    } else {
+        self.window.level = NSNormalWindowLevel;
+        self.window.collectionBehavior = [self desiredWindowCollectionBehavior];
+    }
 }
 
 - (void)toggleToolbeltVisibilityWithSideEffects:(BOOL)sideEffects {
@@ -10245,11 +10258,6 @@ static BOOL iTermApproximatelyEqualRects(NSRect lhs, NSRect rhs, double epsilon)
             iTermWindowTypeIsCompact(self.savedWindowType)) {
             return [iTermAdvancedSettingsModel defaultTabBarHeight];
         }
-        if (@available(macOS 26, *)) {
-            if (![iTermAdvancedSettingsModel useSequoiaStyleTabs]) {
-                return PSMTahoeTabStyle.horizontalTabBarHeight;
-            }
-        }
         return [iTermAdvancedSettingsModel defaultTabBarHeight];
     }
 }
@@ -11232,6 +11240,9 @@ typedef NS_ENUM(NSUInteger, iTermBroadcastCommand) {
     } else if ([item action] == @selector(toggleToolbeltVisibility:)) {
         [item setState:_contentView.shouldShowToolbelt ? NSControlStateValueOn : NSControlStateValueOff];
         return [[iTermToolbeltView availableConfiguredToolsForProfileType:self.currentSession.profile.profileType] count] > 0;
+    } else if ([item action] == @selector(toggleFloatOnTop:)) {
+        [item setState:_floatOnTop ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
     } else if ([item action] == @selector(moveSessionToWindow:)) {
         result = ([[self allSessions] count] > 1);
     } else if ([item action] == @selector(moveSessionToTab:)) {
