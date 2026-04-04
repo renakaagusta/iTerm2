@@ -37,6 +37,11 @@ setup(name='iterm2',
       extras_require={
           'full': ['pyobjc']
       },
+      entry_points={
+          'console_scripts': [
+              'iterm = iterm2.cli:main',
+          ],
+      },
       include_package_data=True,
       zip_safe=False)
 
