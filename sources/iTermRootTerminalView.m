@@ -8,6 +8,7 @@
 
 #import "iTermRootTerminalView.h"
 
+#import "iTermBottomBar.h"
 #import "DebugLogging.h"
 
 #import "NSEvent+iTerm.h"
@@ -159,6 +160,7 @@ NS_CLASS_AVAILABLE_MAC(10_14)
     iTermImageView *_backgroundImage NS_AVAILABLE_MAC(10_14);
     NSView *_workaroundView;  // 10.14 only. See issue 8701.
     iTermLayerBackedSolidColorView *_notchMask NS_AVAILABLE_MAC(12_0);
+    iTermBottomBar *_bottomBar;
 }
 
 - (instancetype)initWithFrame:(NSRect)frameRect
@@ -414,8 +416,17 @@ NS_CLASS_AVAILABLE_MAC(10_14)
             _notchMask.hidden = YES;
             [self addSubview:_notchMask];
         }
+
+        // Bottom bar (transparency, float-on-top, system stats)
+        _bottomBar = [[iTermBottomBar alloc] initWithFrame:NSMakeRect(0, 0, frameRect.size.width, iTermBottomBarHeight)];
+        _bottomBar.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin;
+        [self addSubview:_bottomBar];
     }
     return self;
+}
+
+- (iTermBottomBar *)bottomBar {
+    return _bottomBar;
 }
 
 - (void)dealloc {
@@ -1309,6 +1320,7 @@ NS_CLASS_AVAILABLE_MAC(10_14)
         .bottom = [self bottomBorderInset],
         .top = (_delegate.divisionViewShouldBeVisible ? kDivisionViewHeight : 0) + [self notchInset]
     };
+    [self layoutBottomBar:&decorationHeights window:thisWindow];
     decorationHeights.top += [self topBorderInset];
     if ([self shouldLeaveEmptyAreaAtTop]) {
         DLog(@"Add tabbar control height to decoration height to leave an empty area at the top.");
@@ -1353,6 +1365,7 @@ NS_CLASS_AVAILABLE_MAC(10_14)
         .bottom = [self bottomBorderInset],
         .top = [self notchInset]
     };
+    [self layoutBottomBar:&decorationHeights window:thisWindow];
     if (!_tabBarControlOnLoan) {
         if (!self.tabBarControl.flashing) {
             decorationHeights.top += _tabBarControl.height;
@@ -1419,6 +1432,7 @@ NS_CLASS_AVAILABLE_MAC(10_14)
         .top = [self notchInset],
         .bottom = tabBarFrame.origin.y
     };
+    [self layoutBottomBar:&decorationHeights window:thisWindow];
     decorationHeights.top += [self topBorderInset];
     if (_delegate.divisionViewShouldBeVisible) {
         decorationHeights.top += kDivisionViewHeight;
@@ -1495,6 +1509,7 @@ NS_CLASS_AVAILABLE_MAC(10_14)
         .bottom = 0
     };
     decorationHeights.bottom += [self bottomBorderInset];
+    [self layoutBottomBar:&decorationHeights window:thisWindow];
     decorationHeights.top += [self topBorderInset];
     if (_delegate.divisionViewShouldBeVisible) {
         decorationHeights.top += kDivisionViewHeight;
@@ -1730,6 +1745,16 @@ NS_CLASS_AVAILABLE_MAC(10_14)
         statusBarViewController.view.superview != _statusBarContainer) {
         [self layoutSubviews];
     }
+}
+
+- (void)layoutBottomBar:(iTermDecorationHeights *)decorationHeights
+                 window:(NSWindow *)thisWindow {
+    const CGFloat contentHeight = thisWindow ? [thisWindow.contentView frame].size.height : self.bounds.size.height;
+    const CGFloat barY = decorationHeights->bottom;
+    _bottomBar.frame = NSMakeRect(0, barY, self.bounds.size.width, iTermBottomBarHeight);
+    decorationHeights->bottom += iTermBottomBarHeight;
+    (void)contentHeight;
+    [_bottomBar refresh];
 }
 
 - (void)layoutStatusBar:(iTermDecorationHeights *)decorationHeights

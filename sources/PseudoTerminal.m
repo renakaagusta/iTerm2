@@ -57,6 +57,7 @@
 #import "iTermRecordingCodec.h"
 #import "iTermRestorableStateController.h"
 #import "iTermSessionRestorationStatusProtocol.h"
+#import "iTermBottomBar.h"
 #import "iTermRootTerminalView.h"
 #import "iTermSavePanel.h"
 #import "iTermScriptFunctionCall.h"
@@ -230,6 +231,7 @@ typedef NS_ENUM(int, iTermShouldHaveTitleSeparator) {
 };
 
 @interface PseudoTerminal () <
+    iTermBottomBarDelegate,
     iTermBroadcastInputHelperDelegate,
     iTermGraphCodable,
     iTermObject,
@@ -748,6 +750,7 @@ typedef NS_ENUM(int, iTermShouldHaveTitleSeparator) {
                                        tabBarDelegate:self
                                              delegate:self] autorelease];
     self.window.contentView = _contentView;
+    _contentView.bottomBar.delegate = self;
     if (hotkeyWindowType == iTermHotkeyWindowTypeNone) {
         self.window.alphaValue = 1;
     } else {
@@ -1247,6 +1250,35 @@ ITERM_WEAKLY_REFERENCEABLE
         self.window.level = NSNormalWindowLevel;
         self.window.collectionBehavior = [self desiredWindowCollectionBehavior];
     }
+}
+
+#pragma mark - iTermBottomBarDelegate
+
+- (CGFloat)bottomBarCurrentTransparency:(iTermBottomBar *)sender {
+    PTYSession *session = self.currentSession;
+    if (!session) {
+        return 0.0;
+    }
+    return (CGFloat)session.textview.transparency;
+}
+
+- (void)bottomBar:(iTermBottomBar *)sender setTransparency:(CGFloat)transparency {
+    PTYSession *session = self.currentSession;
+    if (!session) {
+        return;
+    }
+    session.transparency = (float)transparency;
+}
+
+- (BOOL)bottomBarIsFloatingOnTop:(iTermBottomBar *)sender {
+    return _floatOnTop;
+}
+
+- (void)bottomBar:(iTermBottomBar *)sender setFloatOnTop:(BOOL)floatOnTop {
+    if (_floatOnTop == floatOnTop) {
+        return;
+    }
+    [self toggleFloatOnTop:nil];
 }
 
 - (void)toggleToolbeltVisibilityWithSideEffects:(BOOL)sideEffects {
