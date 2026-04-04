@@ -339,6 +339,16 @@ const int kMaxSelectedTextLengthForCustomActions = 400;
 
     // Allocate a menu
     theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
+
+    // Rename Session — always the first item
+    {
+        NSMenuItem *renameItem = [[NSMenuItem alloc] initWithTitle:@"Rename Session…"
+                                                            action:@selector(renameSession:)
+                                                     keyEquivalent:@""];
+        renameItem.target = self;
+        [theMenu addItem:renameItem];
+        [theMenu addItem:[NSMenuItem separatorItem]];
+    }
     id<iTermImageInfoReading> imageInfo = [self.delegate contextMenu:self imageInfoAtCoord:coord];
     if (imageInfo) {
         // Show context menu for an image.
@@ -1164,6 +1174,10 @@ const int kMaxSelectedTextLengthForCustomActions = 400;
 
 - (void)stopCoprocess:(id)sender {
     [self.delegate contextMenuStopCoprocess:self];
+}
+
+- (void)renameSession:(id)sender {
+    [self.delegate contextMenuRenameSession:self];
 }
 
 - (void)closeTextViewSession:(id)sender {

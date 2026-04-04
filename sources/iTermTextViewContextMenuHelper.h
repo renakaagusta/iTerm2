@@ -103,6 +103,7 @@ hasOpenAnnotationInRange:(VT100GridCoordRange)coordRange;
 - (void)contextMenuToggleBroadcastingInput:(iTermTextViewContextMenuHelper *)contextMenu;
 - (BOOL)contextMenuHasCoprocess:(iTermTextViewContextMenuHelper *)contextMenu;
 - (void)contextMenuStopCoprocess:(iTermTextViewContextMenuHelper *)contextMenu;
+- (void)contextMenuRenameSession:(iTermTextViewContextMenuHelper *)contextMenu;
 - (void)contextMenuCloseSession:(iTermTextViewContextMenuHelper *)contextMenu;
 - (BOOL)contextMenuSessionCanBeRestarted:(iTermTextViewContextMenuHelper *)contextMenu;
 - (void)contextMenuRestartSession:(iTermTextViewContextMenuHelper *)contextMenu;

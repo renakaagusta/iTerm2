@@ -1718,6 +1718,27 @@ hasOpenAnnotationInRange:(VT100GridCoordRange)coordRange {
     [self.delegate textViewStopCoprocess];
 }
 
+- (void)contextMenuRenameSession:(iTermTextViewContextMenuHelper *)contextMenu {
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"Rename Session";
+    alert.informativeText = @"Enter a new name for this session. Leave blank to use the default title.";
+    [alert addButtonWithTitle:@"Rename"];
+    [alert addButtonWithTitle:@"Cancel"];
+
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 260, 22)];
+    textField.stringValue = [self.delegate textViewCurrentSessionName] ?: @"";
+    textField.placeholderString = @"Session name";
+    alert.accessoryView = textField;
+
+    [alert layout];
+    [textField becomeFirstResponder];
+
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
+        NSString *name = [textField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        [self.delegate textViewSetSessionName:name.length > 0 ? name : nil];
+    }
+}
+
 - (void)contextMenuCloseSession:(iTermTextViewContextMenuHelper *)contextMenu {
     [self.delegate textViewCloseWithConfirmation];
 }

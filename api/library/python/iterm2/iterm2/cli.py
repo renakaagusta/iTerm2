@@ -36,6 +36,11 @@ def _build_parser() -> argparse.ArgumentParser:
     # close
     sub.add_parser("close", help="Close current tab (closes window if it is the last tab)")
 
+    # rename
+    p_rename = sub.add_parser("rename", help="Rename the current session")
+    p_rename.add_argument("name", nargs="?", default=None,
+                          help="New session name (omit to clear custom name)")
+
     return parser
 
 
@@ -80,6 +85,13 @@ async def _run(connection: object, args: argparse.Namespace) -> None:
 
     elif args.command == "close":
         await session.async_close(force=False)
+
+    elif args.command == "rename":
+        profile = await session.async_get_profile()
+        new_name = args.name if args.name is not None else (profile.name or "")
+        write_only = iterm2.LocalWriteOnlyProfile()
+        write_only.set_name(new_name)
+        await session.async_set_profile_properties(write_only)
 
 
 def main() -> None:

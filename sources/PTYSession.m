@@ -11686,6 +11686,17 @@ typedef NS_ENUM(NSUInteger, PTYSessionTmuxReport) {
     [[_delegate realParentWindow] restartSessionWithConfirmation:self];
 }
 
+- (NSString *)textViewCurrentSessionName {
+    return _nameController.presentationWindowTitle;
+}
+
+- (void)textViewSetSessionName:(NSString *)name {
+    // Overwrite the profile's Name key for this session only.
+    // Passing nil reverts to the original profile name.
+    NSString *effectiveName = name ?: (_originalProfile[KEY_NAME] ?: @"");
+    [self setSessionSpecificProfileValues:@{ KEY_NAME: effectiveName }];
+}
+
 - (void)textViewPasteFromSessionWithMostRecentSelection:(PTYSessionPasteFlags)flags {
     NSString *string = [[iTermController sharedInstance] lastSelectionPromise].wait.maybeFirst;
     if (string) {

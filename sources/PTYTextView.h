@@ -151,6 +151,8 @@ extern const CGFloat PTYTextViewMarginClickGraceWidth;
 - (void)textViewToggleBroadcastingInput;
 - (void)textViewCloseWithConfirmation;
 - (void)textViewRestartWithConfirmation;
+- (nullable NSString *)textViewCurrentSessionName;
+- (void)textViewSetSessionName:(nullable NSString *)name;
 - (void)textViewPasteFromSessionWithMostRecentSelection:(PTYSessionPasteFlags)flags;
 - (BOOL)textViewWindowUsesTransparency;
 - (BOOL)textViewAmbiguousWidthCharsAreDoubleWidth;
