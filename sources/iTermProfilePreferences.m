@@ -951,14 +951,27 @@ NSString *const kProfilePreferenceInitialDirectoryAdvancedValue = @"Advanced";
 }
 
 + (id)statusBarLayout:(Profile *)profile {
-    if (profile[KEY_STATUS_BAR_LAYOUT]) {
-        return profile[KEY_STATUS_BAR_LAYOUT];
+    NSDictionary *saved = profile[KEY_STATUS_BAR_LAYOUT];
+    // A non-empty saved layout always wins.
+    if (saved.count > 0) {
+        return saved;
     }
+    // Default layout: one appctl status component spanning the full bar.
     static NSDictionary *defaultValue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        iTermStatusBarLayout *layout;
-        layout = [[iTermStatusBarLayout alloc] initWithScope:nil];
+        NSDictionary *knobs = @{};
+        NSDictionary *configuration = @{
+            iTermStatusBarComponentConfigurationKeyKnobValues: knobs,
+            iTermStatusBarComponentConfigurationKeyLayoutAdvancedConfigurationDictionaryValue: @{},
+        };
+        NSDictionary *componentEntry = @{
+            @"class": @"iTermStatusBarAppctlComponent",
+            @"configuration": configuration,
+        };
+        iTermStatusBarLayout *layout = [[iTermStatusBarLayout alloc]
+            initWithDictionary:@{ iTermStatusBarLayoutKeyComponents: @[ componentEntry ] }
+                         scope:nil];
         defaultValue = layout.dictionaryValue;
     });
     return defaultValue;

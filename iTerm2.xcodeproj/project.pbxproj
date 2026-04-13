@@ -1310,6 +1310,8 @@
 		A61E0C502D5ACD4F00D4633A /* PTYSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61E0C4F2D5ACD4C00D4633A /* PTYSession.swift */; };
 		A61ED2A520E99DCD0035BECD /* iTermStatusBarClockComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = A61ED2A320E99DCD0035BECD /* iTermStatusBarClockComponent.h */; };
 		A61ED2A620E99DCD0035BECD /* iTermStatusBarClockComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A61ED2A420E99DCD0035BECD /* iTermStatusBarClockComponent.m */; };
+		AA0APPCTL0000000000000003 /* iTermStatusBarAppctlComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = AA0APPCTL0000000000000001 /* iTermStatusBarAppctlComponent.h */; };
+		AA0APPCTL0000000000000004 /* iTermStatusBarAppctlComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0APPCTL0000000000000002 /* iTermStatusBarAppctlComponent.m */; };
 		A61ED2A920E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = A61ED2A720E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.h */; };
 		A61ED2AA20E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A61ED2A820E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.m */; };
 		A61ED2AD20E9FA230035BECD /* iTermStatusBarSearchFieldComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = A61ED2AB20E9FA230035BECD /* iTermStatusBarSearchFieldComponent.h */; };
@@ -6564,6 +6566,8 @@
 		A61E0C4F2D5ACD4C00D4633A /* PTYSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTYSession.swift; sourceTree = "<group>"; };
 		A61ED2A320E99DCD0035BECD /* iTermStatusBarClockComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iTermStatusBarClockComponent.h; sourceTree = "<group>"; };
 		A61ED2A420E99DCD0035BECD /* iTermStatusBarClockComponent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iTermStatusBarClockComponent.m; sourceTree = "<group>"; };
+		AA0APPCTL0000000000000001 /* iTermStatusBarAppctlComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iTermStatusBarAppctlComponent.h; sourceTree = "<group>"; };
+		AA0APPCTL0000000000000002 /* iTermStatusBarAppctlComponent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iTermStatusBarAppctlComponent.m; sourceTree = "<group>"; };
 		A61ED2A720E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iTermStatusBarVariableBaseComponent.h; sourceTree = "<group>"; };
 		A61ED2A820E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iTermStatusBarVariableBaseComponent.m; sourceTree = "<group>"; };
 		A61ED2AB20E9FA230035BECD /* iTermStatusBarSearchFieldComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iTermStatusBarSearchFieldComponent.h; sourceTree = "<group>"; };
@@ -11237,6 +11241,8 @@
 				A63011CB20E851E0008114B7 /* iTermStatusBarSpringComponent.m */,
 				A61ED2A320E99DCD0035BECD /* iTermStatusBarClockComponent.h */,
 				A61ED2A420E99DCD0035BECD /* iTermStatusBarClockComponent.m */,
+				AA0APPCTL0000000000000001 /* iTermStatusBarAppctlComponent.h */,
+				AA0APPCTL0000000000000002 /* iTermStatusBarAppctlComponent.m */,
 				A61ED2A720E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.h */,
 				A61ED2A820E9E92E0035BECD /* iTermStatusBarVariableBaseComponent.m */,
 				A61ED2AB20E9FA230035BECD /* iTermStatusBarSearchFieldComponent.h */,
@@ -15330,6 +15336,7 @@
 				A68400AF1FF861A8008D3EE2 /* iTermFullScreenFlashRenderer.h in Headers */,
 				A6866B7D23CAA31900ACD94C /* iTermPidInfoClient.h in Headers */,
 				A6A4B2AF2426B8D600184EAC /* iTermTouchbarMappings.h in Headers */,
+				AA0APPCTL0000000000000003 /* iTermStatusBarAppctlComponent.h in Headers */,
 				A61ED2A520E99DCD0035BECD /* iTermStatusBarClockComponent.h in Headers */,
 				530AB8BC20B3D3D000D2AA08 /* iTermWindowHacks.h in Headers */,
 				A6D694012E41C094005E9AFE /* SFSymbolEnum.h in Headers */,
@@ -18393,6 +18400,7 @@
 				A69A2FEC2E5D790800803E66 /* PSMYosemiteTabStyle.m in Sources */,
 				A6EC937A24E8545500EEADEF /* iTermPasteHelper.m in Sources */,
 				A6F718C22265AF1D0053488E /* iTermPathFinder.m in Sources */,
+				AA0APPCTL0000000000000004 /* iTermStatusBarAppctlComponent.m in Sources */,
 				A61ED2A620E99DCD0035BECD /* iTermStatusBarClockComponent.m in Sources */,
 				A6069F102DF25CE600EE6CC7 /* iTermAIError.swift in Sources */,
 				A6A4866020B6762E00493302 /* AppearancePreferencesViewController.m in Sources */,

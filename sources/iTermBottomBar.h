@@ -12,6 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class iTermAction;
 @class iTermBottomBar;
 
 @protocol iTermBottomBarDelegate <NSObject>
@@ -27,6 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Called when the user toggles the float-on-top button.
 - (void)bottomBar:(iTermBottomBar *)sender setFloatOnTop:(BOOL)floatOnTop;
+
+/// Called when the user wants to run a shortcut action.
+/// Pass newWindow=YES to run it in a new terminal window instead of the current session.
+- (void)bottomBar:(iTermBottomBar *)sender runAction:(iTermAction *)action inNewWindow:(BOOL)newWindow;
+
+/// Called when the user clicks "Manage..." to open the shortcuts preferences panel.
+- (void)bottomBarManageShortcutsClicked:(iTermBottomBar *)sender;
 
 @end
 
