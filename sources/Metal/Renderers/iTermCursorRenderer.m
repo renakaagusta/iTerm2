@@ -616,19 +616,24 @@ static id<MTLBuffer> iTermNewVertexBufferWithBlockCursorQuad(iTermCursorRenderer
     ITAssertWithMessage(tState.vertexBuffer != nil, @"Nil vertex buffer");
     ITAssertWithMessage(tState.offsetBuffer != nil, @"Nil offset buffer");
 
+    const CGSize cellSize = tState.cellConfiguration.cellSize;
+    if (cellSize.width <= 0 || cellSize.height <= 0) {
+        return;
+    }
     if (!_lightTexture ||
         ![NSObject object:self.colorSpace isEqualToObject:tState.configuration.colorSpace] ||
-        !CGSizeEqualToSize(_textureSize, tState.cellConfiguration.cellSize)) {
-        _lightTexture = [self.cellRenderer textureFromImage:[iTermImageWrapper withImage:[[[[NSBundle bundleForClass:self.class] imageForResource:@"key-light"] it_imageOfSize:tState.cellConfiguration.cellSize] it_verticallyFlippedImage]]
-                                               context:nil
+        !CGSizeEqualToSize(_textureSize, cellSize)) {
+        NSBundle *bundle = [NSBundle bundleForClass:self.class];
+        _lightTexture = [self.cellRenderer textureFromImage:[iTermImageWrapper withImage:[[[bundle imageForResource:@"key-light"] it_imageOfSize:cellSize] it_verticallyFlippedImage]]
+                                               context:tState.poolContext
                                             colorSpace:tState.configuration.colorSpace];
         ITAssertWithMessage(_lightTexture != nil, @"Failed to load key-light image");
-        _darkTexture = [self.cellRenderer textureFromImage:[iTermImageWrapper withImage:[[[[NSBundle bundleForClass:self.class] imageForResource:@"key-dark"] it_imageOfSize:tState.cellConfiguration.cellSize] it_verticallyFlippedImage]]
-                                               context:nil
+        _darkTexture = [self.cellRenderer textureFromImage:[iTermImageWrapper withImage:[[[bundle imageForResource:@"key-dark"] it_imageOfSize:cellSize] it_verticallyFlippedImage]]
+                                               context:tState.poolContext
                                             colorSpace:tState.configuration.colorSpace];
         ITAssertWithMessage(_darkTexture != nil, @"Failed to load key-dark image");
         self.colorSpace = tState.configuration.colorSpace;
-        _textureSize = tState.cellConfiguration.cellSize;
+        _textureSize = cellSize;
     }
     [_cellRenderer drawWithTransientState:tState
                             renderEncoder:frameData.renderEncoder

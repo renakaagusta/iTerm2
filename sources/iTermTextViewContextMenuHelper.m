@@ -259,7 +259,8 @@ const int kMaxSelectedTextLengthForCustomActions = 400;
     if ([item action] == @selector(restartSession:)) {
         return [self.delegate contextMenuSessionCanBeRestarted:self];
     }
-    if ([item action] == @selector(toggleBroadcastingInput:) ||
+    if ([item action] == @selector(renameSession:) ||
+        [item action] == @selector(toggleBroadcastingInput:) ||
         [item action] == @selector(closeTextViewSession:) ||
         [item action] == @selector(editTextViewSession:) ||
         [item action] == @selector(clearTextViewBuffer:) ||

@@ -11691,10 +11691,8 @@ typedef NS_ENUM(NSUInteger, PTYSessionTmuxReport) {
 }
 
 - (void)textViewSetSessionName:(NSString *)name {
-    // Overwrite the profile's Name key for this session only.
-    // Passing nil reverts to the original profile name.
-    NSString *effectiveName = name ?: (_originalProfile[KEY_NAME] ?: @"");
-    [self setSessionSpecificProfileValues:@{ KEY_NAME: effectiveName }];
+    NSString *effectiveName = name.length > 0 ? name : (_originalProfile[KEY_NAME] ?: @"");
+    [self didInitializeSessionWithName:effectiveName];
 }
 
 - (void)textViewPasteFromSessionWithMostRecentSelection:(PTYSessionPasteFlags)flags {

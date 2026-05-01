@@ -11,6 +11,7 @@
 #import "iTermFontPanel.h"
 #import "iTerm2SharedARC-Swift.h"
 #import "iTermStatusBarActionComponent.h"
+#import "iTermStatusBarAppctlComponent.h"
 #import "iTermStatusBarBatteryComponent.h"
 #import "iTermStatusBarComponent.h"
 #import "iTermStatusBarCPUUtilizationComponent.h"
@@ -105,6 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadElements {
     NSArray<Class> *classes = @[
+                                 [iTermStatusBarAppctlComponent class],
+
                                  [iTermStatusBarBatteryComponent class],
                                  [iTermStatusBarCPUUtilizationComponent class],
                                  [iTermStatusBarMemoryUtilizationComponent class],

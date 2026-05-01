@@ -1281,6 +1281,19 @@ ITERM_WEAKLY_REFERENCEABLE
     [self toggleFloatOnTop:nil];
 }
 
+- (void)bottomBar:(iTermBottomBar *)sender runAction:(iTermAction *)action inNewWindow:(BOOL)newWindow {
+    if (newWindow) {
+        [[iTermController sharedInstance] newWindow:nil];
+        [[[iTermController sharedInstance] currentTerminal].currentSession applyAction:action];
+    } else {
+        [self.currentSession applyAction:action];
+    }
+}
+
+- (void)bottomBarManageShortcutsClicked:(iTermBottomBar *)sender {
+    [[PreferencePanel sharedInstance] openToPreferenceWithKey:kPreferenceKeyActions];
+}
+
 - (void)toggleToolbeltVisibilityWithSideEffects:(BOOL)sideEffects {
     _contentView.shouldShowToolbelt = !_contentView.shouldShowToolbelt;
     BOOL didResizeWindow = NO;

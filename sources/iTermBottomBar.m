@@ -1103,6 +1103,18 @@ static const CGFloat kPBtnH  = 22;
 - (NSView *)_chromeView {
     NSMutableArray<NSView *> *rows = [NSMutableArray array];
 
+    // Build lookup: profile directory name (id) → "Profile N - email" or "Profile N - displayName"
+    NSMutableDictionary<NSString *, NSString *> *profileDisplayNames = [NSMutableDictionary dictionary];
+    for (NSDictionary *p in _chProfiles) {
+        NSString *pid = [p[@"id"] isKindOfClass:[NSString class]] ? p[@"id"] : nil;
+        NSString *pname = [p[@"name"] isKindOfClass:[NSString class]] ? p[@"name"] : nil;
+        NSString *pemail = [p[@"email"] isKindOfClass:[NSString class]] ? p[@"email"] : nil;
+        if (pid) {
+            NSString *suffix = pemail ?: pname;
+            profileDisplayNames[pid] = suffix ? [NSString stringWithFormat:@"%@ - %@", pid, suffix] : pid;
+        }
+    }
+
     // Active sessions at top
     [rows addObject:[self _sectionHeader:@"ACTIVE SESSIONS"]];
     if (_chSessions.count == 0) {
@@ -1111,7 +1123,8 @@ static const CGFloat kPBtnH  = 22;
         for (NSDictionary *s in _chSessions) {
             NSString *profile = [s[@"profile"] isKindOfClass:[NSString class]] ? s[@"profile"] : @"?";
             BOOL active = [s[@"active"] boolValue];
-            NSString *label = [NSString stringWithFormat:@"%@ %@", active ? @"▶" : @"   ", profile];
+            NSString *displayName = profileDisplayNames[profile] ?: profile;
+            NSString *label = [NSString stringWithFormat:@"%@ %@", active ? @"▶" : @"   ", displayName];
             NSButton *switchBtn = [self _btn:@"Switch" sel:@selector(_chromeSwitchSession:)];
             NSButton *stopBtn   = [self _btn:@"Stop"   sel:@selector(_chromeStopSession:)];
             setBtnPayload(switchBtn, profile);
@@ -1131,9 +1144,10 @@ static const CGFloat kPBtnH  = 22;
                            : ([entry isKindOfClass:[NSDictionary class]]
                               ? (entry[@"name"] ?: entry[@"profile"]) : nil);
             if (!name) continue;
+            NSString *displayName = profileDisplayNames[name] ?: name;
             NSButton *launchBtn = [self _btn:@"Launch" sel:@selector(_chHistoryLaunch:)];
             setBtnPayload(launchBtn, name);
-            [rows addObject:[self _textRow:name btns:@[launchBtn]]];
+            [rows addObject:[self _textRow:displayName btns:@[launchBtn]]];
         }
     }
 

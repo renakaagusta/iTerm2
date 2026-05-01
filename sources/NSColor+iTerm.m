@@ -995,11 +995,17 @@ iTermP3Color iTermSRGBColorToP3Color(iTermSRGBColor srgb) {
     if (!color) {
         return self;
     }
-    // Convert colors to LAB color space for perceptual blending
-    CGFloat whitePoint[3] = {0.95047, 1.0, 1.08883}; // D50 white point
-    CGFloat blackPoint[3] = {0.0, 0.0, 0.0};
-    CGFloat range[4] = {-128.0, 127.0, -128.0, 127.0};
-    CGColorSpaceRef labColorSpace = CGColorSpaceCreateLab(whitePoint, blackPoint, range);
+    // Convert colors to LAB color space for perceptual blending.
+    // The color space is created once and reused; recreating it on every call
+    // triggers CGCMSConverterCreate which builds an ICC profile pipeline each time.
+    static CGColorSpaceRef labColorSpace;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        CGFloat whitePoint[3] = {0.95047, 1.0, 1.08883}; // D50 white point
+        CGFloat blackPoint[3] = {0.0, 0.0, 0.0};
+        CGFloat range[4] = {-128.0, 127.0, -128.0, 127.0};
+        labColorSpace = CGColorSpaceCreateLab(whitePoint, blackPoint, range);
+    });
 
     if (!labColorSpace) {
         return self;
@@ -1028,12 +1034,10 @@ iTermP3Color iTermSRGBColorToP3Color(iTermSRGBColor srgb) {
     CGFloat components[4] = {blendedL, blendedA, blendedB, 1.0};
     CGColorRef cgColor = CGColorCreate(labColorSpace, components);
     if (!cgColor) {
-        CGColorSpaceRelease(labColorSpace);
         return self;
     }
     ciBlendedColor = [[[CIColor alloc] initWithColor:[NSColor colorWithCGColor:cgColor]] autorelease];
     CGColorRelease(cgColor);
-    CGColorSpaceRelease(labColorSpace);
 
     // Convert the blended LAB color to NSColor object for display
     return [[NSColor colorWithCIColor:ciBlendedColor] colorUsingColorSpace:self.colorSpace];

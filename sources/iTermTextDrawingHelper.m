@@ -155,6 +155,11 @@ static CGFloat iTermTextDrawingHelperAlphaValueForDefaultBackgroundColor(BOOL ha
 
     BOOL _preferSpeedToFullLigatureSupport;
     NSMutableDictionary<NSNumber *, NSImage *> *_cachedMarks;
+
+    // Cache for selectedCommandOutlineColors — invalidated when inputs change.
+    NSArray<NSColor *> *_cachedOutlineColors;
+    NSColor *_cachedOutlineSelectedColor;
+    NSColor *_cachedOutlineBackgroundColor;
 }
 
 - (instancetype)init {
@@ -976,10 +981,23 @@ static CGFloat iTermTextDrawingHelperAlphaValueForDefaultBackgroundColor(BOOL ha
         selectedColor = [NSColor colorWithDisplayP3Red:0.2 green:0.2 blue:1 alpha:1];
     }
     NSColor *bg = [[self defaultBackgroundColor] colorWithAlphaComponent:1.0];
-    return @[
+
+    // Cache the blended result — blendedWithColor:weight: creates an ICC color profile
+    // converter (CGCMSConverterCreate) on every call, which is very expensive inside a
+    // Metal draw loop. The inputs change only when the user changes colors in prefs.
+    if (_cachedOutlineColors &&
+        [selectedColor isEqual:_cachedOutlineSelectedColor] &&
+        [bg isEqual:_cachedOutlineBackgroundColor]) {
+        return _cachedOutlineColors;
+    }
+
+    _cachedOutlineSelectedColor = selectedColor;
+    _cachedOutlineBackgroundColor = bg;
+    _cachedOutlineColors = @[
         selectedColor,
         [selectedColor blendedWithColor:bg weight:0.25],
     ];
+    return _cachedOutlineColors;
 }
 
 const CGFloat commandRegionOutlineThickness = 2.0;
